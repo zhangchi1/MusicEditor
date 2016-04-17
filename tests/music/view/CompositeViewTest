@@ -1,0 +1,161 @@
+package cs3500.music.view;
+
+import org.junit.Test;
+
+import java.awt.*;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.io.IOException;
+
+import cs3500.music.controller.BeatController;
+
+import static org.junit.Assert.assertEquals;
+
+/**
+ * Test the composite view
+ */
+public class CompositeViewTest {
+
+  private final StringBuilder out = new StringBuilder();
+  private final GuiView guiView = new GuiView() {
+    @Override
+    public void addKeyListener(KeyListener key) {
+      out.append("addKeyListener\n");
+    }
+
+    @Override
+    public void removeKeyListener(KeyListener key) {
+      out.append("removeKeyListener\n");
+    }
+
+    @Override
+    public void addMouseListener(MouseListener mouse) {
+      out.append("addMouseListener\n");
+    }
+
+    @Override
+    public void removeMouseListener(MouseListener mouse) {
+      out.append("removeMouseListener\n");
+    }
+
+    @Override
+    public void addMouseMotionListener(MouseMotionListener mouse) {
+      out.append("addMouseMotionListener\n");
+    }
+
+    @Override
+    public void removeMouseMotionListener(MouseMotionListener mouse) {
+      out.append("removeMouseMotionListener\n");
+    }
+
+    @Override
+    public void addHorizAdjustmentListener(AdjustmentListener listener) {
+      out.append("addHorizAdjustmentListener\n");
+    }
+
+    @Override
+    public void removeHorizAdjustmentListener(AdjustmentListener listener) {
+      out.append("removeHorizAdjustmentListener\n");
+    }
+
+    @Override
+    public void addVertAdjustmentListener(AdjustmentListener listener) {
+      out.append("addVertAdjustmentListener\n");
+    }
+
+    @Override
+    public void removeVertAdjustmentListener(AdjustmentListener listener) {
+      out.append("removeVertAdjustmentListener\n");
+    }
+
+    @Override
+    public Point fromScreenPoint(Point screenPoint) {
+      return new Point(34, 42);
+    }
+
+    @Override
+    public void renderModel(BeatController timer) throws IOException {
+      out.append("renderModel\n");
+    }
+
+    @Override
+    public void initialize() {
+      out.append("initialize\n");
+    }
+  };
+  private MusicOutputDevice otherView = new MusicOutputDevice() {
+    @Override
+    public void renderModel(BeatController timer) throws IOException {
+      out.append("renderModelMO\n");
+    }
+
+    @Override
+    public void initialize() {
+      out.append("initializeMO\n");
+    }
+  };
+  private CompositeView view = new CompositeView(guiView, otherView);
+
+  @Test
+  public void testKeyListener() {
+    view.addKeyListener(null);
+    view.removeKeyListener(null);
+    assertEquals("addKeyListener\n" +
+            "removeKeyListener\n", out.toString());
+  }
+
+  @Test
+  public void testMouseListener() {
+    view.addMouseListener(null);
+    view.removeMouseListener(null);
+    assertEquals("addMouseListener\n" +
+            "removeMouseListener\n", out.toString());
+  }
+
+  @Test
+  public void testMouseMotionListener() {
+    view.addMouseMotionListener(null);
+    view.removeMouseMotionListener(null);
+    assertEquals("addMouseMotionListener\n" +
+            "removeMouseMotionListener\n", out.toString());
+  }
+
+  @Test
+  public void testHorizAdjustmentListener() {
+    view.addHorizAdjustmentListener(null);
+    view.removeHorizAdjustmentListener(null);
+    assertEquals("addHorizAdjustmentListener\n" +
+            "removeHorizAdjustmentListener\n", out.toString());
+  }
+
+  @Test
+  public void testVertAdjustmentListener() {
+    view.addVertAdjustmentListener(null);
+    view.removeVertAdjustmentListener(null);
+    assertEquals("addVertAdjustmentListener\n" +
+            "removeVertAdjustmentListener\n", out.toString());
+  }
+
+  @Test
+  public void testInitialize() {
+    view.initialize();
+    assertEquals("initializeMO\n" +
+                "initialize\n", out.toString());
+  }
+
+  @Test
+  public void testRenderModel() throws IOException {
+    view.renderModel(null);
+    assertEquals("renderModelMO\n" +
+                "renderModel\n", out.toString());
+  }
+
+
+  @Test
+  public void testFromScreenPoint() throws IOException {
+    assertEquals(new Point(34, 42), view.fromScreenPoint(new Point(3, 4)));
+  }
+
+}
