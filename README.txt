@@ -112,6 +112,22 @@ would compute the necessary state updates and mutate the viewmodel. The
 setters in the viewmodel would then alert the view that an update had occured
 and the view would update its rendering.
 
+-------------------------------------------------------------------------------
+
+To run our program navigate to the location of the jar file and run a command
+of the following form:
+java -jar musiceditor.jar <filename> <viewmode> [adapted]
+
+<filename>: the relative path to the input file
+<viewmode>: one of "console", "midi", "visual", or "composite"
+[adapted]: if "adapted" is added as a third argument, it will use the the
+adapted supplier's views instead of our own. All view modes work both with our
+views and with the adapted views.
+
+Example command:
+java -jar musiceditor.jar "mary-little-lamb.txt" composite adapted
+
+-------------------------------------------------------------------------------
 Users can use several key and mouse event combinations to edit the music piece:
 Instructions:
 1.	Click the head of a note to select it.
